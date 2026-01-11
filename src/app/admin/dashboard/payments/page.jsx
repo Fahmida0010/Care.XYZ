@@ -51,7 +51,7 @@ export default function PaymentsPage() {
           <div className="hidden md:block bg-white 
           shadow-lg rounded-lg items-center align-left">
             <table className="w-full text-sm">
-              <thead className="bg-purple-600 text-white">
+              <thead className="bg-purple-600 text-yellow-500">
                 <tr>
                   <th className="p-4 text-left">User</th>
                   <th className="p-4">Amount</th>
@@ -64,7 +64,8 @@ export default function PaymentsPage() {
                 {payments.map(p => (
                   <tr
                     key={p._id}
-                    className=" hover:bg-gray-50 transition-colors"
+                    className=" hover:bg-gray-50
+                     transition-colors"
                   >
                     <td className="p-4">{p.userEmail}</td>
                     <td className="p-4 font-bold text-green-600">
