@@ -1,7 +1,11 @@
 import About from "@/components/home/About";
 import Banner from "@/components/home/Banner";
+import HowItWorks from "@/components/home/HowitWorks";
 import ServicesOverview from "@/components/home/ServicesOverview";
-import Testimonials from "@/components/home/Testimonials";
+import WhyChooseUs from "@/components/home/WhychooseUs";
+import CareTips from "@/components/home/CareTips";
+import ExpertCaretaker from "@/components/home/Expertcaretaker";
+
 
 export default function HomePage() {
   return (
@@ -9,7 +13,10 @@ export default function HomePage() {
       <Banner />
       <About />
       <ServicesOverview/>
-      <Testimonials/>
+      <HowItWorks/>
+      <WhyChooseUs/>
+      <CareTips/>
+      <ExpertCaretaker/>
     </>
   );
 }

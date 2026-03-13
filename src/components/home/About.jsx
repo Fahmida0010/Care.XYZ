@@ -23,10 +23,8 @@ export default function About() {
         </div>
   
         {/* Right Text + Second Image */}
-        <div className="relative w-full md:w-1/2 text-center
-         md:text-left">
-          <h2 className="text-3xl md:text-4xl
-          font-bold text-purple-800 mb-6">
+        <div className="relative w-full md:w-1/2 text-center md:text-left">
+          <h2 className="text-3xl md:text-4xl font-bold text-purple-800 mb-6">
             About Care.xyz
           </h2>
           <p className="text-yellow-600 font-medium max-w-lg mb-6">
@@ -36,9 +34,7 @@ export default function About() {
           </p>
 
           {/* Second Image overlapping */}
-          <div className="absolute right-0 w-32
-           h-32 md:w-40 md:h-40 rounded-t-full overflow-hidden 
-           border-4 border-green-500 shadow-lg">
+          <div className="absolute right-0 w-32 h-32 md:w-40 md:h-40 rounded-t-full overflow-hidden border-4 border-green-500 shadow-lg">
             <Image
               src={caregiver2}
               alt="Caregiver 2"

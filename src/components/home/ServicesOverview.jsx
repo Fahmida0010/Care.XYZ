@@ -1,15 +1,23 @@
 "use client";
+
 import { useEffect, useState } from "react";
 import Link from "next/link";
 
 export default function ServicesOverview() {
   const [services, setServices] = useState([]);
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     fetch("/api/services")
       .then((res) => res.json())
-      .then((data) => setServices(data))
-      .catch((err) => console.error("Error fetching services:", err));
+      .then((data) => {
+        setServices(data);
+        setLoading(false);
+      })
+      .catch((err) => {
+        console.error("Error fetching services:", err);
+        setLoading(false);
+      });
   }, []);
 
   const babyCare = services.filter((s) => s.category === "Baby Care");
@@ -20,23 +28,35 @@ export default function ServicesOverview() {
 
   return (
     <section className="max-w-7xl mx-auto p-6 py-12">
-      <h2 className="text-4xl font-bold text-center mb-12
-       text-pink-800">
+      <h2 className="text-4xl font-bold text-center mb-12 text-pink-800">
         Our Care Services
       </h2>
-      <ServiceGroup title="👶 Baby Care
-      " theme="blue " services={babyCare} />
-      <ServiceGroup title="🧓 Elderly Care" theme="green" services={elderlyCare} />
+
+      <ServiceGroup
+        title="👶 Baby Care"
+        theme="blue"
+        services={babyCare}
+        loading={loading}
+      />
+
+      <ServiceGroup
+        title="🧓 Elderly Care"
+        theme="green"
+        services={elderlyCare}
+        loading={loading}
+      />
+
       <ServiceGroup
         title="🏥 Sick People Care"
         theme="red"
         services={sickCare}
+        loading={loading}
       />
     </section>
   );
 }
 
-function ServiceGroup({ title,services, theme = "blue" }) {
+function ServiceGroup({ title, services, theme = "blue", loading }) {
   const themes = {
     blue: {
       sectionBg: "bg-blue-50",
@@ -74,47 +94,71 @@ function ServiceGroup({ title,services, theme = "blue" }) {
 
   return (
     <div className={`mb-16 rounded-2xl p-8 ${style.sectionBg}`}>
-      <h3 className={`text-3xl font-bold mb-8 ${style.title}`}>{title}</h3>
+      <h3 className={`text-3xl font-bold mb-8 ${style.title}`}>
+        {title}
+      </h3>
 
       <div className="grid md:grid-cols-3 gap-8">
-        {services.length > 0 ? (
-          services.slice(0, 3).map((service) => (
-            <div
-              key={service._id}
-              className={`rounded-2xl overflow-hidden border-2 ${style.border} ${style.cardBg} shadow-lg ${style.hoverBorder} transition-all duration-300 hover:shadow-2xl hover:scale-105`}
-            >
-              <img
-                src={service.image}
-                alt={service.title}
-                className="h-56 w-full object-cover"
-              />
 
-              <div className="p-6">
-                <h4 className="text-xl font-bold text-gray-800 mb-2">
-                  {service.title}
-                </h4>
-                <p className="text-gray-600 text-sm mb-4">
-                  {service.description.slice(0, 100)}...
-                </p>
+        {loading
+          ? Array(3)
+              .fill(0)
+              .map((_, i) => <SkeletonCard key={i} />)
+          : services.slice(0, 3).map((service) => (
+              <div
+                key={service._id}
+                className={`rounded-2xl overflow-hidden border-2 ${style.border} ${style.cardBg} shadow-lg ${style.hoverBorder} transition-all duration-300 hover:shadow-2xl hover:scale-105`}
+              >
+                <img
+                  src={service.image}
+                  alt={service.title}
+                  className="h-56 w-full object-cover"
+                />
 
-                <p className={`text-2xl font-bold mb-4 ${style.price}`}>
-                  ৳{service.pricePerDay} <span className="text-sm font-normal">/ day</span>
-                </p>
+                <div className="p-6">
+                  <h4 className="text-xl font-bold text-gray-800 mb-2">
+                    {service.title}
+                  </h4>
 
-                <Link
-  href={`/services/${service.id || service._id}`}
-                  className={`inline-block font-semibold btn ${style.link} transition hover:underline`}
-                >
-                  View Details →
-                </Link>
+                  <p className="text-gray-600 text-sm mb-4">
+                    {service.description
+                      ? service.description.slice(0, 100)
+                      : "No description available"}
+                    ...
+                  </p>
+
+                  <p className={`text-2xl font-bold mb-4 ${style.price}`}>
+                    ৳{service.pricePerDay}
+                    <span className="text-sm font-normal"> / day</span>
+                  </p>
+
+                  <Link
+                    href={`/services/${service._id}`}
+                    className={`inline-block font-semibold ${style.link} transition hover:underline`}
+                  >
+                    View Details →
+                  </Link>
+                </div>
               </div>
-            </div>
-          ))
-        ) : (
-          <p className="col-span-full text-center text-gray-500 py-10 text-lg">
-            এই ক্যাটাগরিতে এখনো কোনো সার্ভিস যোগ করা হয়নি।
-          </p>
-        )}
+            ))}
+      </div>
+    </div>
+  );
+}
+
+function SkeletonCard() {
+  return (
+    <div className="rounded-2xl overflow-hidden border bg-white shadow-lg animate-pulse">
+      <div className="h-56 bg-gray-300"></div>
+
+      <div className="p-6 space-y-4">
+        <div className="h-5 bg-gray-300 rounded w-3/4"></div>
+        <div className="h-4 bg-gray-200 rounded w-full"></div>
+        <div className="h-4 bg-gray-200 rounded w-5/6"></div>
+
+        <div className="h-6 bg-gray-300 rounded w-1/3"></div>
+
+        <div className="h-4 bg-gray-200 rounded w-1/2"></div>
       </div>
     </div>
   );

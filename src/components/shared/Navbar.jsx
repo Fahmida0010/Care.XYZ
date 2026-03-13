@@ -1,4 +1,5 @@
 "use client";
+
 import Link from "next/link";
 import Logo from "./Logo";
 import { useSession, signOut } from "next-auth/react";
@@ -7,8 +8,9 @@ import { useState } from "react";
 import { Menu, X } from "lucide-react";
 
 const Navbar = () => {
-  const { data: session } = useSession();
+  const { data: session, status } = useSession();
   const router = useRouter();
+
   const [mobileOpen, setMobileOpen] = useState(false);
   const [profileOpen, setProfileOpen] = useState(false);
 
@@ -18,6 +20,8 @@ const Navbar = () => {
   };
 
   const isAdmin = session?.user?.role === "admin";
+
+  if (status === "loading") return null;
 
   return (
     <nav className="w-full bg-gradient-to-r from-purple-200 via-indigo-200 to-yellow-300 shadow-md">
@@ -29,12 +33,17 @@ const Navbar = () => {
           {session?.user && (
             <div className="flex items-center gap-2">
               {session.user.image ? (
-                <img src={session.user.image} className="w-9 h-9 rounded-full border" />
+                <img
+                  src={session.user.image}
+                  alt="profile"
+                  className="w-9 h-9 rounded-full border"
+                />
               ) : (
                 <div className="w-9 h-9 bg-blue-600 text-white rounded-full flex items-center justify-center">
                   {session.user.name?.[0]}
                 </div>
               )}
+
               <button
                 onClick={handleLogout}
                 className="bg-red-600 hover:bg-red-800 text-white px-3 py-1 rounded text-sm"
@@ -43,6 +52,7 @@ const Navbar = () => {
               </button>
             </div>
           )}
+
           <button onClick={() => setMobileOpen(!mobileOpen)}>
             {mobileOpen ? <X size={26} /> : <Menu size={26} />}
           </button>
@@ -50,25 +60,44 @@ const Navbar = () => {
 
         {/* Desktop menu */}
         <ul className="hidden md:flex gap-6 font-bold items-center">
-          <Link className="hover:text-indigo-600" href="/">Home</Link>
-          <Link className="hover:text-indigo-600" href="/services">Services</Link>
+          <li>
+            <Link className="hover:text-indigo-600" href="/">
+              Home
+            </Link>
+          </li>
+
+          <li>
+            <Link className="hover:text-indigo-600" href="/services">
+              Services
+            </Link>
+          </li>
 
           {session?.user && (
             <>
               {!isAdmin && (
-                <Link className="hover:text-indigo-600" href="/my-bookings">
-                  My Bookings
-                </Link>
+                <li>
+                  <Link
+                    className="hover:text-indigo-600"
+                    href="/my-bookings"
+                  >
+                    My Bookings
+                  </Link>
+                </li>
               )}
 
               {isAdmin && (
-                <Link className="hover:text-indigo-600" href="/admin/dashboard">
-                  Dashboard
-                </Link>
+                <li>
+                  <Link
+                    className="hover:text-indigo-600"
+                    href="/admin/dashboard"
+                  >
+                    Dashboard
+                  </Link>
+                </li>
               )}
 
-              {/* Profile dropdown */}
-              <div className="relative">
+              {/* Profile */}
+              <li className="relative">
                 <button
                   onClick={() => setProfileOpen(!profileOpen)}
                   className="flex items-center gap-2"
@@ -76,6 +105,7 @@ const Navbar = () => {
                   {session.user.image ? (
                     <img
                       src={session.user.image}
+                      alt="profile"
                       className="w-10 h-10 rounded-full border"
                     />
                   ) : (
@@ -91,33 +121,35 @@ const Navbar = () => {
                     <p className="text-sm">{session.user.email}</p>
                   </div>
                 )}
-              </div>
+              </li>
 
-              <button
-                onClick={handleLogout}
-                className="bg-red-600 hover:bg-red-800 text-white px-4 py-1 rounded"
-              >
-                Logout
-              </button>
+              <li>
+                <button
+                  onClick={handleLogout}
+                  className="bg-red-600 hover:bg-red-800 text-white px-4 py-1 rounded"
+                >
+                  Logout
+                </button>
+              </li>
             </>
           )}
 
           {!session?.user && (
-            <Link
-              href="/login"
-              className="bg-blue-600 hover:bg-blue-800 text-white px-4 py-1 rounded"
-            >
-              Login
-            </Link>
+            <li>
+              <Link
+                href="/login"
+                className="bg-blue-600 hover:bg-blue-800 text-white px-4 py-1 rounded"
+              >
+                Login
+              </Link>
+            </li>
           )}
         </ul>
       </div>
 
       {/* Mobile dropdown */}
       {mobileOpen && (
-        <div
-          className="md:hidden absolute right-3 top-16 bg-gray-300 w-48 rounded-lg shadow-lg p-4 font-semibold z-50 flex flex-col space-y-3"
-        >
+        <div className="md:hidden absolute right-3 top-16 bg-gray-300 w-48 rounded-lg shadow-lg p-4 font-semibold z-50 flex flex-col space-y-3">
           <Link
             className="hover:bg-indigo-300 rounded-lg p-2"
             onClick={() => setMobileOpen(false)}
@@ -125,6 +157,7 @@ const Navbar = () => {
           >
             Home
           </Link>
+
           <Link
             className="hover:bg-indigo-300 rounded-lg p-2"
             onClick={() => setMobileOpen(false)}
