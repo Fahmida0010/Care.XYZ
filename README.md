@@ -108,19 +108,16 @@ Users can select their **preferred day** when booking a caretaker.
 
 ### Step 1: Clone the repository
 
-```id="1b3od8"
 git clone https://github.com/Fahmida0010/Care.XYZ.git
 ```
 
 ### Step 2: Go to the project folder
 
-```id="hsl5ti"
 cd Care.XYZ
 ```
 
 ### Step 3: Install dependencies
 
-```id="p4g9af"
 npm install
 ```
 
@@ -128,7 +125,6 @@ npm install
 
 Create a `.env.local` file and add necessary environment variables:
 
-```id="s3qk0t"
 MONGODB_URI=your_mongodb_connection_string
 JWT_SECRET=your_jwt_secret
 STRIPE_SECRET_KEY=your_stripe_secret_key
@@ -136,7 +132,7 @@ STRIPE_SECRET_KEY=your_stripe_secret_key
 
 ### Step 5: Run the development server
 
-```id="7d1kgq"
+```
 npm run dev
 ```
 
@@ -158,3 +154,48 @@ https://github.com/Fahmida0010/Care.XYZ.git
 
 **ADMIN_Email=tahmid@gmail.com
 ADMIN_PASSWORD=Tahmid26@#
+
+
+# Contribution
+
+Contributions are welcome and greatly appreciated.
+
+If you'd like to improve Care.XYZ, follow these steps:
+
+1. Fork the repository
+2. Create a new branch
+
+```bash
+git checkout -b feature/your-feature-name
+```
+
+3. Make your changes
+4. Commit your changes
+
+```bash
+git commit -m "Add your feature"
+```
+
+5. Push to your branch
+
+```bash
+git push origin feature/your-feature-name
+```
+
+6. Open a Pull Request
+
+Please make sure your code follows the project's structure and coding standards.
+
+---
+
+# Support the Project
+
+If you found this project helpful, please consider giving it a ⭐ on GitHub.
+
+Your support helps the project gain visibility and motivates further development.
+
+⭐ Star the repository here:
+
+https://github.com/Fahmida0010/Care.XYZ
+
+Thank you for visiting and supporting Care.XYZ!
